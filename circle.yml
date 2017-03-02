@@ -1,0 +1,15 @@
+machine:
+  node:
+    version: 6.9.4
+
+dependencies:
+  override:
+    - npm install
+test:
+  post:
+    - mkdir -p $CIRCLE_ARTIFACTS/
+    - mv htmlResults.html $CIRCLE_ARTIFACTS/
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit
+    - mv xmlResults.xml $CIRCLE_TEST_REPORTS/junit
+
+

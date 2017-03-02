@@ -1,0 +1,103 @@
+{
+	"variables": [],
+	"info": {
+		"name": "phings API",
+		"_postman_id": "09e7d7d4-bf06-d18e-2126-e9fd797d8051",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "accounts",
+			"description": "Folder for accounts",
+			"item": [
+				{
+					"name": "https://localhost:10010/accounts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Should fail validation\"] = jsonData.failedValidation = true;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{uri}}/accounts",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
+						},
+						"description": "create an account"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "authTokens",
+			"description": "Folder for authTokens",
+			"item": [
+				{
+					"name": "https://localhost:10010/authTokens",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Successful POST request\"] = responseCode.code === 201;",
+									"",
+									"var contentTypeExists = responseHeaders.hasOwnProperty(\"Content-Type\");",
+									"",
+									"tests[\"Has content type\"] = contentTypeExists;",
+									"",
+									"if (contentTypeExists) {",
+									"    tests[\"Content-Type is application/json\"] = responseHeaders[\"Content-Type\"].has(\"application/json\");",
+									"}",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"Returns a JWT is request succeeds\"] =  jsonData.length > 0;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{uri}}/authTokens",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userName\":\"master\", \n\t\"password\":\"test123\"\n}"
+						},
+						"description": "create jwt for use in api calls"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "swagger",
+			"description": "Folder for swagger",
+			"item": []
+		}
+	]
+}
