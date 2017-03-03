@@ -9,7 +9,15 @@ newman.run({
     html : { export : './htmlResults.html' },
   },
   environment: require('./phings-api.postman_environment.json'),
-}, function (err) {
-  if (err) { throw err; }
+}, function (err, summary) {
+  if (err) {
+    console.log('ERROR!');
+    process.exit(1);
+    throw err;
+  }
+  if(summary.run.failures.length !== 0){
+    console.log(summary);
+    process.exit(-1);
+  }
   console.log('collection run complete!');
 });
