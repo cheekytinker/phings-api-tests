@@ -21,7 +21,9 @@
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"",
-									"tests[\"Should fail validation\"] = jsonData.failedValidation = true;"
+									"tests[\"Should fail validation\"] = jsonData.failedValidation === true;",
+									"",
+									"tests[\"Should return 400 response code\"] = responseCode.code === 400;"
 								]
 							}
 						}
@@ -39,6 +41,47 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{}"
+						},
+						"description": "create an account"
+					},
+					"response": []
+				},
+				{
+					"name": "https://localhost:10010/accounts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"tests[\"Successful POST request\"] = responseCode.code === 201;",
+									""
+								]
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable('timestamp', (new Date()).getTime());"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{uri}}/accounts",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"{{timestamp}}\",\r\n  \"primaryContact\": {\r\n    \"userName\": \"{{timestamp}}\",\r\n    \"password\": \"345345\",\r\n    \"email\": \"a@b.com\",\r\n    \"firstName\": \"Idris\",\r\n    \"lastName\": \"Holl\"\r\n  }\r\n}"
 						},
 						"description": "create an account"
 					},
@@ -86,7 +129,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"userName\":\"master\", \n\t\"password\":\"test123\"\n}"
+							"raw": "{\n\t\"userName\":\"master\", \n\t\"password\":\"master123\"\n}"
 						},
 						"description": "create jwt for use in api calls"
 					},
